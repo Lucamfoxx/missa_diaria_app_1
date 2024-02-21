@@ -33,7 +33,7 @@ class SalmosPage extends StatelessWidget {
                 child: Text(
                   '$salmoNumber',
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: const Color.fromARGB(255, 0, 0, 0),
                   ),

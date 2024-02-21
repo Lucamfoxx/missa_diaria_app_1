@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class BibliaPage extends StatelessWidget {
-  final String pdfFilePath =
-      'assets/biblia.pdf'; // Caminho para o arquivo PDF da Bíblia
+  final String pdfFilePath = 'assets/biblia.pdf';
 
   @override
   Widget build(BuildContext context) {
@@ -14,19 +13,15 @@ class BibliaPage extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            _openPdfViewer(context, pdfFilePath);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PdfViewerPage(pdfFilePath: pdfFilePath),
+              ),
+            );
           },
           child: Text('Abrir Bíblia'),
         ),
-      ),
-    );
-  }
-
-  void _openPdfViewer(BuildContext context, String pdfFilePath) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => PdfViewerPage(pdfFilePath: pdfFilePath),
       ),
     );
   }
@@ -43,8 +38,9 @@ class PdfViewerPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Visualizador de PDF'),
       ),
-      body: PDFView(
-        filePath: pdfFilePath,
+      body: SfPdfViewer.asset(
+        pdfFilePath,
+        canShowPaginationDialog: true,
       ),
     );
   }
