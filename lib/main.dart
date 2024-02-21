@@ -5,6 +5,7 @@ import 'biblia.dart';
 import 'santo_do_dia.dart';
 import 'oracoes.dart';
 import 'paroquias.dart';
+import 'proverbios.dart'; // Importação de proverbios.dart
 import 'salmo_layout.dart';
 
 void main() {
@@ -29,9 +30,10 @@ class MyApp extends StatelessWidget {
         '/santo_do_dia': (context) => SantoDoDiaPage(),
         '/oracoes': (context) => OracoesPage(),
         '/paroquias': (context) => ParoquiasPage(),
+        '/proverbios': (context) => ProverbiosPage(proverbioNumber: 1),
         '/salmo_layout': (context) => SalmoPage(salmoNumber: 1),
         for (int i = 1; i <= 150; i++)
-          '/salmo_$i': (context) => SalmoPage(salmoNumber: i)
+          '/salmo_$i': (context) => SalmoPage(salmoNumber: i),
       },
     );
   }
@@ -58,6 +60,8 @@ class MissaDiariaApp extends StatelessWidget {
                 MenuButton('Santo do Dia', '/santo_do_dia'),
                 MenuButton('Orações', '/oracoes'),
                 MenuButton('Paróquias', '/paroquias'),
+                MenuButton(
+                    'Provérbios', '/proverbios'), // Botão para Provérbios
               ],
             ),
           ),
