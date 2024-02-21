@@ -74,7 +74,7 @@ class ParoquiasPage extends StatelessWidget {
                 paroquias: [
                   'Paróquia Nossa Senhora Aparecida',
                   'Paróquia Nossa Senhora da Livração',
-                  'Paróquia Nossa Senhora de Fátima ( SETOR MEDEIROS )',
+                  'Paróquia Nossa Senhora de Fátima (SETOR MEDEIROS)',
                   'Paróquia Nossa Senhora de Loreto',
                   'Paróquia Santa Zita e Nossa Senhora do Caminho',
                   'Paróquia Santo Antônio de Lisboa',
@@ -140,7 +140,7 @@ class ParoquiasPage extends StatelessWidget {
   }
 }
 
-class ParoquiaSetorTile extends StatelessWidget {
+class ParoquiaSetorTile extends StatefulWidget {
   final String setor;
   final List<String> paroquias;
 
@@ -150,45 +150,59 @@ class ParoquiaSetorTile extends StatelessWidget {
   });
 
   @override
+  _ParoquiaSetorTileState createState() => _ParoquiaSetorTileState();
+}
+
+class _ParoquiaSetorTileState extends State<ParoquiaSetorTile> {
+  bool _expanded = false;
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Container(
-          padding: EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Text(
-            setor,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _expanded = !_expanded;
+            });
+          },
+          child: Container(
+            padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
             ),
-            textAlign: TextAlign.center,
+            child: Text(
+              widget.setor,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
-        SizedBox(height: 8),
-        Column(
-          children: paroquias
-              .map(
-                (paroquia) => Container(
-                  margin: EdgeInsets.symmetric(vertical: 4),
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
+        if (_expanded)
+          Column(
+            children: widget.paroquias
+                .map(
+                  (paroquia) => Container(
+                    margin: EdgeInsets.symmetric(vertical: 4),
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ListTile(
+                      title: Text(paroquia),
+                      onTap: () {
+                        // Navegar para a página da paróquia específica se desejado
+                      },
+                    ),
                   ),
-                  child: ListTile(
-                    title: Text(paroquia),
-                    onTap: () {
-                      // Navegar para a página da paróquia específica se desejado
-                    },
-                  ),
-                ),
-              )
-              .toList(),
-        ),
+                )
+                .toList(),
+          ),
       ],
     );
   }

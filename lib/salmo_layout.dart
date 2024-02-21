@@ -24,7 +24,7 @@ class _SalmoPageState extends State<SalmoPage> {
   }
 
   Future<String> _carregarSalmo(int salmoNumber) async {
-    return await rootBundle.loadString('/salmo_$salmoNumber.txt');
+    return await rootBundle.loadString('assets/salmo_$salmoNumber.txt');
   }
 
   void _aumentarFonte() {
@@ -89,7 +89,7 @@ class _SalmoPageState extends State<SalmoPage> {
                         child: Text(
                           snapshot.data!,
                           style: TextStyle(fontSize: _fontSize),
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.left,
                         ),
                       );
                     }
@@ -107,7 +107,7 @@ class _SalmoPageState extends State<SalmoPage> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             FloatingActionButton(
-              key: UniqueKey(), // Chave única para este botão
+              key: ValueKey('anterior'), // Chave única para este botão
               onPressed: _salmoAnterior,
               backgroundColor: Colors.white,
               elevation: 0, // Remover sombra
@@ -118,23 +118,25 @@ class _SalmoPageState extends State<SalmoPage> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 FloatingActionButton(
-                  key: UniqueKey(), // Chave única para este botão
+                  key: ValueKey('aumentar'), // Chave única para este botão
                   onPressed: _aumentarFonte,
                   backgroundColor: const Color.fromARGB(0, 255, 255, 255),
                   elevation: 0, // Remover sombra
-                  child: Icon(Icons.zoom_in, color: Colors.white),
+                  child: Icon(Icons.zoom_in,
+                      color: const Color.fromARGB(255, 0, 0, 0)),
                 ),
                 SizedBox(height: 16.0),
                 FloatingActionButton(
-                  key: UniqueKey(), // Chave única para este botão
+                  key: ValueKey('diminuir'), // Chave única para este botão
                   onPressed: _diminuirFonte,
                   backgroundColor: const Color.fromARGB(0, 255, 255, 255),
                   elevation: 0, // Remover sombra
-                  child: Icon(Icons.zoom_out, color: Colors.white),
+                  child: Icon(Icons.zoom_out,
+                      color: const Color.fromARGB(255, 0, 0, 0)),
                 ),
                 SizedBox(height: 16.0),
                 FloatingActionButton(
-                  key: UniqueKey(), // Chave única para este botão
+                  key: ValueKey('proximo'), // Chave única para este botão
                   onPressed: _proxSalmo,
                   backgroundColor: Colors.white,
                   elevation: 0, // Remover sombra

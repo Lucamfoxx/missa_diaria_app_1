@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'missa_diaria.dart';
 import 'salmos.dart';
 import 'biblia.dart';
-import 'santo_do_dia.dart'; // Importe a página do Santo do Dia
+import 'santo_do_dia.dart';
 import 'oracoes.dart';
 import 'paroquias.dart';
-import 'salmo_layout.dart'; // Importe a página
+import 'salmo_layout.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Missa Diária',
       theme: ThemeData(
-        scaffoldBackgroundColor: Color.fromARGB(255, 0, 58, 140), // Azul escuro
-        primarySwatch: Colors.blue, // Cor principal
+        scaffoldBackgroundColor: Color.fromARGB(255, 0, 58, 140),
+        primarySwatch: Colors.blue,
       ),
       initialRoute: '/',
       routes: {
@@ -26,12 +26,10 @@ class MyApp extends StatelessWidget {
         '/missa_diaria': (context) => MissaDiariaPage(),
         '/salmos': (context) => SalmosPage(),
         '/biblia': (context) => BibliaPage(),
-        '/santo_do_dia': (context) =>
-            SantoDoDiaPage(), // Rota para a página do Santo do Dia
+        '/santo_do_dia': (context) => SantoDoDiaPage(),
         '/oracoes': (context) => OracoesPage(),
         '/paroquias': (context) => ParoquiasPage(),
-        '/salmo_layout': (context) =>
-            SalmoPage(salmoNumber: 1), // Utilize SalmoPage
+        '/salmo_layout': (context) => SalmoPage(salmoNumber: 1),
         for (int i = 1; i <= 150; i++)
           '/salmo_$i': (context) => SalmoPage(salmoNumber: i)
       },
@@ -54,12 +52,10 @@ class MissaDiariaApp extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Botões do menu
                 MenuButton('Missa Diária', '/missa_diaria'),
                 MenuButton('Salmos', '/salmos'),
                 MenuButton('Bíblia', '/biblia'),
-                MenuButton('Santo do Dia',
-                    '/santo_do_dia'), // Botão para a página do Santo do Dia
+                MenuButton('Santo do Dia', '/santo_do_dia'),
                 MenuButton('Orações', '/oracoes'),
                 MenuButton('Paróquias', '/paroquias'),
               ],
