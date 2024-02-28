@@ -22,7 +22,10 @@ class _SantoDoDiaPageState extends State<SantoDoDiaPage> {
     try {
       DateTime dataAtual = DateTime.now();
       String nomeArquivo = DateFormat('dd_MM').format(dataAtual);
-      String caminhoImagem = 'assets/santo_$nomeArquivo.png';
+      String nomeArquivoImagem = '$nomeArquivo' +
+          '_imagem.jpg'; // Construindo o nome do arquivo de imagem
+      String caminhoImagem =
+          'assets/$nomeArquivoImagem'; // Alterando o caminho da imagem
       setState(() {
         _imagePath = caminhoImagem;
       });
@@ -54,9 +57,6 @@ class _SantoDoDiaPageState extends State<SantoDoDiaPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _imagePath.isNotEmpty
-                  ? Image.asset(_imagePath, width: 100, height: 100)
-                  : SizedBox(),
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
@@ -92,6 +92,22 @@ class _SantoDoDiaPageState extends State<SantoDoDiaPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
+                              // Exibição da imagem dentro do quadrado branco
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                padding: EdgeInsets.all(10.0),
+                                child: _imagePath.isNotEmpty
+                                    ? Image.asset(
+                                        _imagePath,
+                                        width: 300,
+                                        height: 300,
+                                      )
+                                    : SizedBox(),
+                              ),
+                              SizedBox(height: 10),
                               Text(
                                 title,
                                 textAlign: TextAlign.left,
@@ -239,6 +255,30 @@ class ExibirSantoDoDiaPage extends StatefulWidget {
 
 class _ExibirSantoDoDiaPageState extends State<ExibirSantoDoDiaPage> {
   double _fontSize = 16.0;
+  String _imagePath = ''; // Adicionando o caminho da imagem
+
+  @override
+  void initState() {
+    super.initState();
+    // Carregando a imagem ao iniciar a página
+    _loadImage();
+  }
+
+  Future<void> _loadImage() async {
+    try {
+      DateTime dataAtual = DateTime.now();
+      String nomeArquivo = DateFormat('dd_MM').format(dataAtual);
+      String nomeArquivoImagem = '$nomeArquivo' +
+          '_imagem.jpg'; // Construindo o nome do arquivo de imagem
+      String caminhoImagem =
+          'assets/$nomeArquivoImagem'; // Alterando o caminho da imagem
+      setState(() {
+        _imagePath = caminhoImagem;
+      });
+    } catch (e) {
+      print('Erro ao carregar imagem: $e');
+    }
+  }
 
   void _increaseFontSize() {
     setState(() {
@@ -281,10 +321,21 @@ class _ExibirSantoDoDiaPageState extends State<ExibirSantoDoDiaPage> {
               ),
               padding: EdgeInsets.all(20.0),
               child: SingleChildScrollView(
-                padding: EdgeInsets.all(20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    // Exibição da imagem
+                    _imagePath.isNotEmpty
+                        ? Image.asset(
+                            _imagePath,
+                            width: 300,
+                            height: 300,
+                          )
+                        : SizedBox(),
+
+                    SizedBox(height: 10),
+
+                    // Título do santo do dia
                     Text(
                       title,
                       textAlign: TextAlign.left,
@@ -294,6 +345,8 @@ class _ExibirSantoDoDiaPageState extends State<ExibirSantoDoDiaPage> {
                       ),
                     ),
                     SizedBox(height: 10),
+
+                    // Conteúdo do santo do dia
                     Text(
                       content,
                       textAlign: TextAlign.left,
