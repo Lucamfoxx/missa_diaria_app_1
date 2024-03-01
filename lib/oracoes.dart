@@ -1,21 +1,13 @@
-import 'dart:io';
-import 'dart:async' show Future;
-import 'package:flutter/services.dart' show rootBundle;
-
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:flutter/services.dart'; // Importe esta biblioteca
 
-class OracoesPage extends StatefulWidget {
-  @override
-  _OracoesPageState createState() => _OracoesPageState();
-}
-
-class _OracoesPageState extends State<OracoesPage> {
-  double _fontSize = 16.0;
+class OracoesPage extends StatelessWidget {
   final Map<String, String> oracoes = {
-    'Abri Senhor': 'Abri_Senhor.txt',
-    'Almas': 'Almas.txt',
+    'Abri Senhor': 'abri_senhor.txt',
+    'Almas': 'almas.txt',
     'Alma de Cristo': 'Alma_de_Cristo.txt',
-    'Amado Jesus, José e Maria': 'Amado_Jesus,_Jose_e_Maria.txt',
+    'Amado Jesus José e Maria': 'Amado_Jesus_Jose_e_Maria.txt',
     'Antes das refeições': 'Antes_das_refeicoes.txt',
     'Após as refeições': 'Apos_as_refeicoes.txt',
     'As 15 Orações a Jesus (Santa Brígida)':
@@ -267,7 +259,7 @@ class _OracoesPageState extends State<OracoesPage> {
     'Veni Creator Spiritus (Vinde Espírito Criador)':
         'Veni_Creator_Spiritus_(Vinde_Espirito_Criador).txt',
     'Via Sacra': 'Via_Sacra.txt',
-    'Vinho e Pão': 'Vinho_e_Pao.txt',
+    'Vinho e Pão': 'Vinho_e_Pao.txt'
   };
 
   @override
@@ -276,93 +268,112 @@ class _OracoesPageState extends State<OracoesPage> {
       appBar: AppBar(
         title: Text('Orações'),
       ),
-      body: ListView(
-        children: oracoes.entries.map((oracao) {
-          return Card(
-            elevation: 4,
-            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: ListTile(
-              title: Text(
-                oracao.key,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              onTap: () {
-                _showOracaoDialog(context, oracao.value);
-              },
-            ),
-          );
-        }).toList(),
+      body: ListView.builder(
+        itemCount: oracoes.length,
+        itemBuilder: (context, index) {
+          String title = oracoes.keys.elementAt(index);
+          return OracaoItem(title: title, oracaoFilePath: oracoes[title]!);
+        },
       ),
     );
   }
+}
 
-  void _showOracaoDialog(BuildContext context, String fileName) async {
-    try {
-      final content = await rootBundle.loadString('/oracoes/$fileName');
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-            builder: (BuildContext context, setState) {
-              return AlertDialog(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+class OracaoItem extends StatefulWidget {
+  final String title;
+  final String oracaoFilePath;
+
+  const OracaoItem({
+    required this.title,
+    required this.oracaoFilePath,
+  });
+
+  @override
+  _OracaoItemState createState() => _OracaoItemState();
+}
+
+class _OracaoItemState extends State<OracaoItem> {
+  late String _oracaoText = ''; // Inicialize com uma string vazia
+
+  double _fontSize = 16.0;
+
+  bool _expanded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadOracao();
+  }
+
+  Future<void> _loadOracao() async {
+    String oracaoText =
+        await rootBundle.loadString('assets/${widget.oracaoFilePath}');
+    setState(() {
+      _oracaoText = oracaoText;
+    });
+  }
+
+  void _toggleExpansion() {
+    setState(() {
+      _expanded = !_expanded;
+    });
+  }
+
+  void _changeFontSize(bool increase) {
+    setState(() {
+      _fontSize = increase ? _fontSize + 2.0 : _fontSize - 2.0;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Theme(
+          data: ThemeData(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+          ),
+          child: ListTile(
+            title: Text(widget.title, style: TextStyle(color: Colors.black)),
+            onTap: _toggleExpansion,
+            tileColor: Colors.white,
+          ),
+        ),
+        if (_expanded &&
+            _oracaoText.isNotEmpty) // Verifique se _oracaoText não está vazio
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Oração',
-                      style:
-                          TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+                    IconButton(
+                      icon: Icon(Icons.remove),
+                      onPressed: () => _changeFontSize(false),
                     ),
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.zoom_in),
-                          onPressed: () {
-                            setState(() {
-                              _fontSize += 2.0;
-                            });
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.zoom_out),
-                          onPressed: () {
-                            setState(() {
-                              _fontSize -= 2.0;
-                            });
-                          },
-                        ),
-                      ],
+                    IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () => _changeFontSize(true),
                     ),
                   ],
                 ),
-                backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                content: SingleChildScrollView(
-                  child: Text(
-                    content,
-                    style: TextStyle(
-                      color: const Color.fromARGB(255, 0, 0, 0),
-                      fontSize: _fontSize,
-                    ),
-                  ),
+                SizedBox(height: 10),
+                Text(
+                  _oracaoText,
+                  style: TextStyle(fontSize: _fontSize),
                 ),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      'Fechar',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-      );
-    } catch (e) {
-      print('Erro ao abrir o arquivo: $e');
-    }
+              ],
+            ),
+          ),
+        Divider(),
+      ],
+    );
   }
 }

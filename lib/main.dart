@@ -44,7 +44,14 @@ class MissaDiariaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Missa Diária'),
+        title: Row(
+          children: [
+            Image.asset('assets/logo.png',
+                height: 30), // Adicionando a imagem do logo
+            SizedBox(width: 10), // Espaçamento entre a imagem e o título
+            Text('Missa Diária'),
+          ],
+        ),
       ),
       body: Center(
         child: Padding(
