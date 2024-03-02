@@ -116,7 +116,7 @@ class _ProverbiosPageState extends State<ProverbiosPage> {
             FloatingActionButton(
               key: ValueKey('anterior'), // Chave única para este botão
               onPressed: _proverbioAnterior,
-              backgroundColor: Colors.white,
+              backgroundColor: Color.fromARGB(0, 117, 108, 108),
               elevation: 0, // Remover sombra
               child: Icon(Icons.arrow_back, color: Colors.black),
             ),
@@ -145,7 +145,7 @@ class _ProverbiosPageState extends State<ProverbiosPage> {
                 FloatingActionButton(
                   key: ValueKey('proximo'), // Chave única para este botão
                   onPressed: _proxProverbio,
-                  backgroundColor: Colors.white,
+                  backgroundColor: Color.fromARGB(0, 0, 0, 0),
                   elevation: 0, // Remover sombra
                   child: Icon(Icons.arrow_forward, color: Colors.black),
                 ),

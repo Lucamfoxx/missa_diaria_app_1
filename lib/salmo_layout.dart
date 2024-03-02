@@ -109,7 +109,7 @@ class _SalmoPageState extends State<SalmoPage> {
             FloatingActionButton(
               key: ValueKey('anterior'), // Chave única para este botão
               onPressed: _salmoAnterior,
-              backgroundColor: Colors.white,
+              backgroundColor: const Color.fromARGB(0, 255, 255, 255),
               elevation: 0, // Remover sombra
               child: Icon(Icons.arrow_back, color: Colors.black),
             ),
@@ -138,7 +138,7 @@ class _SalmoPageState extends State<SalmoPage> {
                 FloatingActionButton(
                   key: ValueKey('proximo'), // Chave única para este botão
                   onPressed: _proxSalmo,
-                  backgroundColor: Colors.white,
+                  backgroundColor: Color.fromARGB(0, 255, 255, 255),
                   elevation: 0, // Remover sombra
                   child: Icon(Icons.arrow_forward, color: Colors.black),
                 ),

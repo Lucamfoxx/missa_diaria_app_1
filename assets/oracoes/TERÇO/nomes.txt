@@ -1,0 +1,4 @@
+'Para antes dos estudos': 'assets/Para_antes_dos_estudos.txt',
+'Para a família': 'assets/Para_a_familia.txt',
+'Para obter saúde': 'assets/Para_obter_saude.txt',
+'Para uma viagem': 'assets/Para_uma_viagem.txt',

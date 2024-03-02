@@ -1,8 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.missa_diaria_app">
 
-    <!-- Permissão para acessar o armazenamento externo -->
+    <!-- Permissões necessárias -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Permissão para acesso à internet -->
 
     <application
             android:label="missa_diaria_app"

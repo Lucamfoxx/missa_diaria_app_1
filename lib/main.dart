@@ -16,14 +16,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Missa Diária',
+      title: 'Paróquia São José',
       theme: ThemeData(
         scaffoldBackgroundColor: Color.fromARGB(255, 0, 58, 140),
         primarySwatch: Colors.blue,
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => MissaDiariaApp(),
+        '/': (context) => FutureBuilder(
+              future: precacheImage(AssetImage('assets/logo.png'), context),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return MissaDiariaApp();
+                } else {
+                  return Container(); // You can return a loading indicator here if needed
+                }
+              },
+            ),
         '/missa_diaria': (context) => MissaDiariaPage(),
         '/salmos': (context) => SalmosPage(),
         '/biblia': (context) => BibliaPage(),
@@ -44,14 +53,7 @@ class MissaDiariaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            Image.asset('assets/logo.png',
-                height: 30), // Adicionando a imagem do logo
-            SizedBox(width: 10), // Espaçamento entre a imagem e o título
-            Text('Missa Diária'),
-          ],
-        ),
+        title: Text('Paróquia São José'),
       ),
       body: Center(
         child: Padding(
@@ -61,12 +63,15 @@ class MissaDiariaApp extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                MenuButton('Missa Diária', '/missa_diaria'),
+                Image.asset(
+                    'assets/logo.png'), // Adicionando a imagem no corpo do aplicativo
+                SizedBox(height: 20), // Espaçamento entre a imagem e os botões
+                MenuButton('Liturgia Diária', '/missa_diaria'),
                 MenuButton('Salmos', '/salmos'),
                 MenuButton('Bíblia', '/biblia'),
                 MenuButton('Santo do Dia', '/santo_do_dia'),
                 MenuButton('Orações', '/oracoes'),
-                MenuButton('Paróquias', '/paroquias'),
+                MenuButton('Dioceses', '/paroquias'),
                 MenuButton(
                     'Provérbios', '/proverbios'), // Botão para Provérbios
               ],
