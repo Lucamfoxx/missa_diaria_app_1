@@ -156,7 +156,7 @@ Map<String, List<String>> temasOpcoesMap = {
     'Ó Maria concebida sem pecado',
     'Socorrei Maria'
   ],
-  'Nossa Senhora': [
+  'Orações Marianas': [
     'Nossa Senhora (Medalha Milagrosa)',
     'Nossa Senhora Auxiliadora',
     'Nossa Senhora das Dores',
