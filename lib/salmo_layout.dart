@@ -58,6 +58,24 @@ class _SalmoPageState extends State<SalmoPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Salmo $_currentSalmoNumber'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: _salmoAnterior,
+          ),
+          IconButton(
+            icon: Icon(Icons.zoom_in),
+            onPressed: _aumentarFonte,
+          ),
+          IconButton(
+            icon: Icon(Icons.zoom_out),
+            onPressed: _diminuirFonte,
+          ),
+          IconButton(
+            icon: Icon(Icons.arrow_forward),
+            onPressed: _proxSalmo,
+          ),
+        ],
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -98,53 +116,6 @@ class _SalmoPageState extends State<SalmoPage> {
               ),
             ],
           ),
-        ),
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(left: 31.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            FloatingActionButton(
-              key: ValueKey('anterior'), // Chave única para este botão
-              onPressed: _salmoAnterior,
-              backgroundColor: const Color.fromARGB(0, 255, 255, 255),
-              elevation: 0, // Remover sombra
-              child: Icon(Icons.arrow_back, color: Colors.black),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                FloatingActionButton(
-                  key: ValueKey('aumentar'), // Chave única para este botão
-                  onPressed: _aumentarFonte,
-                  backgroundColor: const Color.fromARGB(0, 255, 255, 255),
-                  elevation: 0, // Remover sombra
-                  child: Icon(Icons.zoom_in,
-                      color: const Color.fromARGB(255, 0, 0, 0)),
-                ),
-                SizedBox(height: 16.0),
-                FloatingActionButton(
-                  key: ValueKey('diminuir'), // Chave única para este botão
-                  onPressed: _diminuirFonte,
-                  backgroundColor: const Color.fromARGB(0, 255, 255, 255),
-                  elevation: 0, // Remover sombra
-                  child: Icon(Icons.zoom_out,
-                      color: const Color.fromARGB(255, 0, 0, 0)),
-                ),
-                SizedBox(height: 16.0),
-                FloatingActionButton(
-                  key: ValueKey('proximo'), // Chave única para este botão
-                  onPressed: _proxSalmo,
-                  backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                  elevation: 0, // Remover sombra
-                  child: Icon(Icons.arrow_forward, color: Colors.black),
-                ),
-              ],
-            ),
-          ],
         ),
       ),
     );

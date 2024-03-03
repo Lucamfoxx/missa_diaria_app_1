@@ -420,6 +420,22 @@ class OracoesPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Orações'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.zoom_in),
+            onPressed: () {
+              // Função para aumentar o tamanho da fonte
+              // Pode ser implementada aqui
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.zoom_out),
+            onPressed: () {
+              // Função para diminuir o tamanho da fonte
+              // Pode ser implementada aqui
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -486,19 +502,50 @@ class OpcaoOracaoTile extends StatelessWidget {
   }
 }
 
-class OracaoPage extends StatelessWidget {
+class OracaoPage extends StatefulWidget {
   final String arquivo;
 
   OracaoPage({required this.arquivo});
+
+  @override
+  _OracaoPageState createState() => _OracaoPageState();
+}
+
+class _OracaoPageState extends State<OracaoPage> {
+  double _fontSize = 16.0;
+
+  void _increaseFontSize() {
+    setState(() {
+      _fontSize += 1.0;
+    });
+  }
+
+  void _decreaseFontSize() {
+    setState(() {
+      if (_fontSize > 1.0) {
+        _fontSize -= 1.0;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Oração'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.zoom_in),
+            onPressed: _increaseFontSize,
+          ),
+          IconButton(
+            icon: Icon(Icons.zoom_out),
+            onPressed: _decreaseFontSize,
+          ),
+        ],
       ),
       body: FutureBuilder(
-        future: rootBundle.loadString(arquivo),
+        future: rootBundle.loadString(widget.arquivo),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData) {
             final texto = snapshot.data!;
@@ -542,7 +589,7 @@ class OracaoPage extends StatelessWidget {
                                   8), // Espaçamento antes do restante do texto
                           Text(
                             restante,
-                            style: TextStyle(fontSize: 16),
+                            style: TextStyle(fontSize: _fontSize),
                             textAlign: TextAlign.justify,
                           ),
                         ],

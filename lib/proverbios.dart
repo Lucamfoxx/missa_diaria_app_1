@@ -65,6 +65,24 @@ class _ProverbiosPageState extends State<ProverbiosPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Provérbio $_currentProverbioNumber'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: _proverbioAnterior,
+          ),
+          IconButton(
+            icon: Icon(Icons.zoom_in),
+            onPressed: _aumentarFonte,
+          ),
+          IconButton(
+            icon: Icon(Icons.zoom_out),
+            onPressed: _diminuirFonte,
+          ),
+          IconButton(
+            icon: Icon(Icons.arrow_forward),
+            onPressed: _proxProverbio,
+          ),
+        ],
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -107,53 +125,6 @@ class _ProverbiosPageState extends State<ProverbiosPage> {
           ),
         ),
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(left: 31.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            FloatingActionButton(
-              key: ValueKey('anterior'), // Chave única para este botão
-              onPressed: _proverbioAnterior,
-              backgroundColor: Color.fromARGB(0, 117, 108, 108),
-              elevation: 0, // Remover sombra
-              child: Icon(Icons.arrow_back, color: Colors.black),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                FloatingActionButton(
-                  key: ValueKey('aumentar'), // Chave única para este botão
-                  onPressed: _aumentarFonte,
-                  backgroundColor: const Color.fromARGB(0, 255, 255, 255),
-                  elevation: 0, // Remover sombra
-                  child: Icon(Icons.zoom_in,
-                      color: const Color.fromARGB(255, 0, 0, 0)),
-                ),
-                SizedBox(height: 16.0),
-                FloatingActionButton(
-                  key: ValueKey('diminuir'), // Chave única para este botão
-                  onPressed: _diminuirFonte,
-                  backgroundColor: const Color.fromARGB(0, 255, 255, 255),
-                  elevation: 0, // Remover sombra
-                  child: Icon(Icons.zoom_out,
-                      color: const Color.fromARGB(255, 0, 0, 0)),
-                ),
-                SizedBox(height: 16.0),
-                FloatingActionButton(
-                  key: ValueKey('proximo'), // Chave única para este botão
-                  onPressed: _proxProverbio,
-                  backgroundColor: Color.fromARGB(0, 0, 0, 0),
-                  elevation: 0, // Remover sombra
-                  child: Icon(Icons.arrow_forward, color: Colors.black),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
       bottomNavigationBar: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: BottomAppBar(
@@ -176,4 +147,28 @@ class _ProverbiosPageState extends State<ProverbiosPage> {
       ),
     );
   }
+}
+
+class PageRouteFade extends PageRouteBuilder {
+  final Widget page;
+
+  PageRouteFade({required this.page})
+      : super(
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) =>
+              page,
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) =>
+              FadeTransition(
+            opacity: animation,
+            child: child,
+          ),
+        );
 }

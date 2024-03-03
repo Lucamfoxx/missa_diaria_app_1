@@ -1,26 +1,27 @@
 import os
+import re
 
-# Diretório onde os arquivos TXT estão localizados
-diretorio = "."
+def adicionar_ponto(arquivo):
+    with open(arquivo, 'r', encoding='utf-8') as f:
+        texto = f.read()
 
-# Lista para armazenar os nomes dos arquivos TXT
-nomes_arquivos = []
+    # Usar expressão regular para encontrar números e adicionar um ponto ao lado deles
+    texto_formatado = re.sub(r'(\d+)', r'\1.', texto)
 
-# Percorre todos os arquivos no diretório atual
-for arquivo in os.listdir(diretorio):
-    if arquivo.endswith(".txt"):
-        # Adiciona o nome do arquivo à lista
-        nomes_arquivos.append(arquivo)
+    # Salvar o arquivo com o texto formatado
+    with open(arquivo, 'w', encoding='utf-8') as f:
+        f.write(texto_formatado)
 
-# Abre o arquivo de destino para escrita
-with open("nomes.txt", "w", encoding="utf-8") as arquivo_destino:
-    # Percorre cada arquivo TXT encontrado
-    for nome_arquivo in nomes_arquivos:
-        # Abre o arquivo TXT
-        with open(os.path.join(diretorio, nome_arquivo), "r", encoding="utf-8") as arquivo_origem:
-            # Lê a primeira linha do arquivo
-            primeira_linha = arquivo_origem.readline().strip()
-            # Escreve no arquivo de destino no formato desejado
-            arquivo_destino.write(f"'{primeira_linha}': 'assets/{nome_arquivo}',\n")
+def main():
+    # Diretório onde o script está localizado
+    diretorio = os.path.dirname(os.path.realpath(__file__))
 
-print("Arquivo 'nomes.txt' foi criado com sucesso!")
+    # Percorrer todos os arquivos no diretório
+    for arquivo in os.listdir(diretorio):
+        if arquivo.endswith('.txt'):
+            caminho_arquivo = os.path.join(diretorio, arquivo)
+            adicionar_ponto(caminho_arquivo)
+            print(f'Arquivo {arquivo} processado com sucesso.')
+
+if __name__ == "__main__":
+    main()

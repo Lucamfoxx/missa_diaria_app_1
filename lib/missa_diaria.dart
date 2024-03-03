@@ -151,6 +151,14 @@ class _MissaDiariaPageState extends State<MissaDiariaPage> {
               }
             },
           ),
+          IconButton(
+            icon: Icon(Icons.zoom_in),
+            onPressed: _increaseFontSize,
+          ),
+          IconButton(
+            icon: Icon(Icons.zoom_out),
+            onPressed: _decreaseFontSize,
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -196,22 +204,6 @@ class _MissaDiariaPageState extends State<MissaDiariaPage> {
             ),
           ),
         ),
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: _increaseFontSize,
-            tooltip: 'Aumentar Fonte',
-            child: Icon(Icons.add),
-          ),
-          SizedBox(height: 16.0),
-          FloatingActionButton(
-            onPressed: _decreaseFontSize,
-            tooltip: 'Diminuir Fonte',
-            child: Icon(Icons.remove),
-          ),
-        ],
       ),
     );
   }
