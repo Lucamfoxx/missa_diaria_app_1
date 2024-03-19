@@ -15,7 +15,7 @@ class MissaDiariaPage extends StatefulWidget {
 }
 
 class _MissaDiariaPageState extends State<MissaDiariaPage> {
-  late String _missaDiariaContent;
+  String _missaDiariaContent = 'Carregando...'; // Inicialização aqui
   double _fontSize = 16.0;
   late DateTime _selectedDate;
 
@@ -23,12 +23,12 @@ class _MissaDiariaPageState extends State<MissaDiariaPage> {
   void initState() {
     super.initState();
     _selectedDate = DateTime.now();
-    _missaDiariaContent = 'Carregando...';
     _fetchAndSaveMissaDiariaContent(_selectedDate);
   }
 
   Future<void> _fetchAndSaveMissaDiariaContent(DateTime date) async {
-    final url = _buildUrl(date);
+    final url =
+        'https://www.vaticannews.va/pt/palavra-do-dia/${date.year}/${_formatTwoDigits(date.month)}/${_formatTwoDigits(date.day)}.html';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -41,26 +41,21 @@ class _MissaDiariaPageState extends State<MissaDiariaPage> {
           });
           await _saveContentToFile(_missaDiariaContent);
         } else {
-          _showError('Conteúdo não encontrado.');
+          setState(() {
+            _missaDiariaContent = 'Conteúdo não encontrado.';
+          });
         }
       } else {
-        _showError('Falha ao carregar o conteúdo.');
+        setState(() {
+          _missaDiariaContent = 'Falha ao carregar o conteúdo.';
+        });
       }
     } catch (e) {
-      _showError('Erro: $e');
+      setState(() {
+        _missaDiariaContent = 'Erro: $e';
+      });
     }
   }
-
-  void _showError(String message) {
-    setState(() {
-      _missaDiariaContent = message;
-    });
-  }
-
-  String _buildUrl(DateTime date) {
-    return 'https://www.vaticannews.va/pt/palavra-do-dia/${date.year}/${_formatTwoDigits(date.month)}/${_formatTwoDigits(date.day)}.html';
-  }
-
   Future<void> _saveContentToFile(String content) async {
     try {
       final directory = await getApplicationDocumentsDirectory();
@@ -68,11 +63,9 @@ class _MissaDiariaPageState extends State<MissaDiariaPage> {
       final dir = Directory(dirPath);
       if (!dir.existsSync()) {
         dir.createSync(recursive: true);
-        print('Diretório criado em: $dirPath');
       }
       final file = File('$dirPath/liturgia_diaria.txt');
       await file.writeAsString(content);
-      print('Arquivo salvo em: ${file.path}');
     } catch (e) {
       print('Erro ao salvar o arquivo: $e');
     }
@@ -90,14 +83,37 @@ class _MissaDiariaPageState extends State<MissaDiariaPage> {
       return null;
     }
   }
-
   String _processContent(String content) {
     final separators = const ['Primeira Leitura', 'Segunda Leitura', 'Evangelho do Dia'];
-    String processedContent = content.replaceAllMapped(
+    String processedContent = content;
+    final lines = processedContent.split('\n');
+    bool previousLineHadNumber = false;
+    for (int i = 2; i < lines.length; i++) {
+      final currentLine = lines[i];
+      if (currentLine.trim().isNotEmpty) {
+        final trimmedLine = currentLine.trimLeft();
+        if (RegExp(r'\d').hasMatch(trimmedLine)) {
+          // Adiciona uma linha vazia após linhas com números
+          lines.insert(i + 1, '');
+          previousLineHadNumber = true;
+        } else if (trimmedLine.contains('.') && !trimmedLine.contains(RegExp(r'\d'))) {
+          // Verifica se a linha contém um ponto e não contém números
+          // Adiciona uma linha vazia após o ponto
+          lines[i] += '\n';
+        }
+      }
+      if (currentLine.trim().isNotEmpty && currentLine.startsWith(' ')) {
+        // Remove espaços extras no início de linhas com texto
+        lines[i] = currentLine.trimLeft();
+      }
+    }
+    processedContent = lines.join('\n');
+
+    processedContent = processedContent.replaceAllMapped(
         RegExp(separators.join('|')), (match) => '\u2022 \u200B${match.group(0)}\n\n');
-    processedContent = processedContent.split('.').join('.\n\n');
     return processedContent.trim();
   }
+
 
   void _increaseFontSize() {
     setState(() {
@@ -163,7 +179,7 @@ class _MissaDiariaPageState extends State<MissaDiariaPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    _selectedDate.toString(),
+                    '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
                     style: const TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
