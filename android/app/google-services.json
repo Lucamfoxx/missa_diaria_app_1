@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "10120062313",
+    "project_id": "santuariosaofrancis",
+    "storage_bucket": "santuariosaofrancis.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10120062313:android:7c7b2d690b5a06ab8009f8",
+        "android_client_info": {
+          "package_name": "Santuario.sao_francisco"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDH-Bm557XZOMfMUdyHFqqckj7g0JY_c7I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10120062313:android:cde57f5e98b344c28009f8",
+        "android_client_info": {
+          "package_name": "com.example.missa_diaria_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDH-Bm557XZOMfMUdyHFqqckj7g0JY_c7I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

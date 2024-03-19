@@ -8,52 +8,57 @@ import 'package:html/dom.dart' as dom;
 import 'package:path_provider/path_provider.dart';
 
 class MissaDiariaPage extends StatefulWidget {
+  const MissaDiariaPage({Key? key}) : super(key: key);
+
   @override
   _MissaDiariaPageState createState() => _MissaDiariaPageState();
 }
 
 class _MissaDiariaPageState extends State<MissaDiariaPage> {
-  String _missaDiariaContent = 'Carregando...';
+  late String _missaDiariaContent;
   double _fontSize = 16.0;
-  DateTime _selectedDate = DateTime.now();
+  late DateTime _selectedDate;
 
   @override
   void initState() {
     super.initState();
+    _selectedDate = DateTime.now();
+    _missaDiariaContent = 'Carregando...';
     _fetchAndSaveMissaDiariaContent(_selectedDate);
   }
 
   Future<void> _fetchAndSaveMissaDiariaContent(DateTime date) async {
-    final url =
-        'https://www.vaticannews.va/pt/palavra-do-dia/${date.year}/${_formatTwoDigits(date.month)}/${_formatTwoDigits(date.day)}.html';
+    final url = _buildUrl(date);
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final document = parser.parse(response.body);
-        final startSequence = 'Leitura do Dia';
-        final endSequence = 'Palavras do Santo Padre';
         final content = _extractTextBetweenSequences(
-            document.body, startSequence, endSequence);
+            document.body, 'Leitura do Dia', 'Palavras do Santo Padre');
         if (content != null) {
           setState(() {
             _missaDiariaContent = _processContent(content);
           });
           await _saveContentToFile(_missaDiariaContent);
         } else {
-          setState(() {
-            _missaDiariaContent = 'Conteúdo não encontrado.';
-          });
+          _showError('Conteúdo não encontrado.');
         }
       } else {
-        setState(() {
-          _missaDiariaContent = 'Falha ao carregar o conteúdo.';
-        });
+        _showError('Falha ao carregar o conteúdo.');
       }
     } catch (e) {
-      setState(() {
-        _missaDiariaContent = 'Erro: $e';
-      });
+      _showError('Erro: $e');
     }
+  }
+
+  void _showError(String message) {
+    setState(() {
+      _missaDiariaContent = message;
+    });
+  }
+
+  String _buildUrl(DateTime date) {
+    return 'https://www.vaticannews.va/pt/palavra-do-dia/${date.year}/${_formatTwoDigits(date.month)}/${_formatTwoDigits(date.day)}.html';
   }
 
   Future<void> _saveContentToFile(String content) async {
@@ -63,9 +68,11 @@ class _MissaDiariaPageState extends State<MissaDiariaPage> {
       final dir = Directory(dirPath);
       if (!dir.existsSync()) {
         dir.createSync(recursive: true);
+        print('Diretório criado em: $dirPath');
       }
       final file = File('$dirPath/liturgia_diaria.txt');
       await file.writeAsString(content);
+      print('Arquivo salvo em: ${file.path}');
     } catch (e) {
       print('Erro ao salvar o arquivo: $e');
     }
@@ -85,38 +92,11 @@ class _MissaDiariaPageState extends State<MissaDiariaPage> {
   }
 
   String _processContent(String content) {
-    final List<String> separators = [
-      'Primeira Leitura',
-      'Segunda Leitura',
-      'Evangelho do Dia'
-    ];
-    String processedContent = content;
-    bool isFirst = true;
-    separators.forEach((separator) {
-      final index = processedContent.indexOf(separator);
-      if (index != -1) {
-        if (isFirst) {
-          processedContent = processedContent.replaceAll(
-              separator, '\u2022 \u200B${separator}\n');
-          isFirst = false;
-        } else {
-          processedContent = processedContent.replaceAll(
-              separator, '\n\n\u2022 \u200B${separator}\n');
-        }
-      }
-    });
-
+    final separators = const ['Primeira Leitura', 'Segunda Leitura', 'Evangelho do Dia'];
+    String processedContent = content.replaceAllMapped(
+        RegExp(separators.join('|')), (match) => '\u2022 \u200B${match.group(0)}\n\n');
     processedContent = processedContent.split('.').join('.\n\n');
-
-    final lines = processedContent.split('\n');
-    for (int i = 0; i < lines.length; i++) {
-      if (lines[i].trim().isNotEmpty) {
-        lines[i] = lines[i].trimLeft();
-      }
-    }
-    processedContent = lines.join('\n');
-
-    return processedContent;
+    return processedContent.trim();
   }
 
   void _increaseFontSize() {
@@ -137,10 +117,10 @@ class _MissaDiariaPageState extends State<MissaDiariaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Liturgia Diaria'),
+        title: const Text('Liturgia Diaria'),
         actions: [
           IconButton(
-            icon: Icon(Icons.calendar_today),
+            icon: const Icon(Icons.calendar_today),
             onPressed: () async {
               final selectedDate = await _selectDate(context);
               if (selectedDate != null) {
@@ -152,11 +132,11 @@ class _MissaDiariaPageState extends State<MissaDiariaPage> {
             },
           ),
           IconButton(
-            icon: Icon(Icons.zoom_in),
+            icon: const Icon(Icons.zoom_in),
             onPressed: _increaseFontSize,
           ),
           IconButton(
-            icon: Icon(Icons.zoom_out),
+            icon: const Icon(Icons.zoom_out),
             onPressed: _decreaseFontSize,
           ),
         ],
@@ -164,15 +144,15 @@ class _MissaDiariaPageState extends State<MissaDiariaPage> {
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Container(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12.0),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
+                    color: Colors.grey,
                     spreadRadius: 5,
                     blurRadius: 7,
                     offset: Offset(0, 3),
@@ -183,13 +163,13 @@ class _MissaDiariaPageState extends State<MissaDiariaPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    _getCurrentDate(),
-                    style: TextStyle(
+                    _selectedDate.toString(),
+                    style: const TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   Text(
                     _missaDiariaContent,
                     textAlign: TextAlign.left,
@@ -208,23 +188,17 @@ class _MissaDiariaPageState extends State<MissaDiariaPage> {
     );
   }
 
-  String _getCurrentDate() {
-    return '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}';
-  }
-
   String _formatTwoDigits(int value) {
     return value.toString().padLeft(2, '0');
   }
 
   Future<DateTime?> _selectDate(BuildContext context) async {
     final currentDate = DateTime.now();
-    final DateTime? picked = await showDatePicker(
+    return await showDatePicker(
       context: context,
       initialDate: currentDate,
       firstDate: DateTime(currentDate.year, 1, 1),
-      lastDate:
-          DateTime(currentDate.year, currentDate.month, currentDate.day + 5),
+      lastDate: DateTime(currentDate.year, currentDate.month, currentDate.day + 5),
     );
-    return picked;
   }
 }

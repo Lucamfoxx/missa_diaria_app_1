@@ -4,11 +4,13 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 class BibliaPage extends StatelessWidget {
   final String pdfFilePath = 'assets/biblia.pdf';
 
+  const BibliaPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bíblia'),
+        title: const Text('Bíblia'),
       ),
       body: Center(
         child: ElevatedButton(
@@ -20,7 +22,7 @@ class BibliaPage extends StatelessWidget {
               ),
             );
           },
-          child: Text('Abrir Bíblia'),
+          child: const Text('Abrir Bíblia'),
         ),
       ),
     );
@@ -36,7 +38,7 @@ class PdfViewerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Visualizador de PDF'),
+        title: const Text('Visualizador de PDF'),
       ),
       body: SfPdfViewer.asset(
         pdfFilePath,

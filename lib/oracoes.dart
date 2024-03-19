@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 Map<String, List<String>> temasOpcoesMap = {
@@ -401,6 +401,8 @@ Map<String, String> caminhosMap = {
 };
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -409,27 +411,29 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: OracoesPage(),
+      home: const OracoesPage(),
     );
   }
 }
 
 class OracoesPage extends StatelessWidget {
+  const OracoesPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Orações'),
+        title: const Text('Orações'),
         actions: [
           IconButton(
-            icon: Icon(Icons.zoom_in),
+            icon: const Icon(Icons.zoom_in),
             onPressed: () {
               // Função para aumentar o tamanho da fonte
               // Pode ser implementada aqui
             },
           ),
           IconButton(
-            icon: Icon(Icons.zoom_out),
+            icon: const Icon(Icons.zoom_out),
             onPressed: () {
               // Função para diminuir o tamanho da fonte
               // Pode ser implementada aqui
@@ -438,7 +442,7 @@ class OracoesPage extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: temasOpcoesMap.keys.map((tema) {
@@ -457,7 +461,7 @@ class TemaOracaoCard extends StatelessWidget {
   final String tema;
   final List<String> opcoes;
 
-  TemaOracaoCard({required this.tema, required this.opcoes});
+  const TemaOracaoCard({Key? key, required this.tema, required this.opcoes}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -466,7 +470,7 @@ class TemaOracaoCard extends StatelessWidget {
       child: ExpansionTile(
         title: Text(
           tema,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -486,7 +490,7 @@ class OpcaoOracaoTile extends StatelessWidget {
   final String opcao;
   final String arquivo;
 
-  OpcaoOracaoTile({required this.opcao, required this.arquivo});
+  const OpcaoOracaoTile({Key? key, required this.opcao, required this.arquivo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -505,7 +509,7 @@ class OpcaoOracaoTile extends StatelessWidget {
 class OracaoPage extends StatefulWidget {
   final String arquivo;
 
-  OracaoPage({required this.arquivo});
+  const OracaoPage({Key? key, required this.arquivo}) : super(key: key);
 
   @override
   _OracaoPageState createState() => _OracaoPageState();
@@ -532,14 +536,14 @@ class _OracaoPageState extends State<OracaoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Oração'),
+        title: const Text('Oração'),
         actions: [
           IconButton(
-            icon: Icon(Icons.zoom_in),
+            icon: const Icon(Icons.zoom_in),
             onPressed: _increaseFontSize,
           ),
           IconButton(
-            icon: Icon(Icons.zoom_out),
+            icon: const Icon(Icons.zoom_out),
             onPressed: _decreaseFontSize,
           ),
         ],
@@ -566,7 +570,7 @@ class _OracaoPageState extends State<OracaoPage> {
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 1,
                         blurRadius: 3,
-                        offset: Offset(0, 2),
+                        offset: const Offset(0, 2),
                       ),
                     ],
                   ),
@@ -577,14 +581,14 @@ class _OracaoPageState extends State<OracaoPage> {
                       children: [
                         Text(
                           primeiraLinha,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 8), // Espaçamento entre as linhas
+                        const SizedBox(height: 8), // Espaçamento entre as linhas
                         if (restante.isNotEmpty) ...[
-                          SizedBox(
+                          const SizedBox(
                               height:
                                   8), // Espaçamento antes do restante do texto
                           Text(
@@ -600,7 +604,7 @@ class _OracaoPageState extends State<OracaoPage> {
               ),
             );
           } else {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }

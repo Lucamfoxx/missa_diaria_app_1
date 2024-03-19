@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class SantoDoDiaPage extends StatefulWidget {
+  const SantoDoDiaPage({Key? key}) : super(key: key);
+
   @override
   _SantoDoDiaPageState createState() => _SantoDoDiaPageState();
 }
@@ -76,18 +78,18 @@ class _SantoDoDiaPageState extends State<SantoDoDiaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Santo do Dia'),
+        title: const Text('Santo do Dia'),
         actions: [
           IconButton(
-            icon: Icon(Icons.zoom_in),
+            icon: const Icon(Icons.zoom_in),
             onPressed: _increaseFontSize,
           ),
           IconButton(
-            icon: Icon(Icons.zoom_out),
+            icon: const Icon(Icons.zoom_out),
             onPressed: _decreaseFontSize,
           ),
           IconButton(
-            icon: Icon(Icons.calendar_today),
+            icon: const Icon(Icons.calendar_today),
             onPressed: () => _selectDate(context),
           ),
         ],
@@ -114,11 +116,11 @@ class _SantoDoDiaPageState extends State<SantoDoDiaPage> {
                       child: _santoDoDiaImage,
                     ),
                   ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Container(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),

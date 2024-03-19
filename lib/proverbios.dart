@@ -5,7 +5,7 @@ import 'package:flutter/services.dart' show rootBundle;
 class ProverbiosPage extends StatefulWidget {
   final int proverbioNumber;
 
-  ProverbiosPage({required this.proverbioNumber});
+  const ProverbiosPage({Key? key, required this.proverbioNumber}) : super(key: key);
 
   @override
   _ProverbiosPageState createState() => _ProverbiosPageState();
@@ -67,26 +67,26 @@ class _ProverbiosPageState extends State<ProverbiosPage> {
         title: Text('Provérbio $_currentProverbioNumber'),
         actions: [
           IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: _proverbioAnterior,
           ),
           IconButton(
-            icon: Icon(Icons.zoom_in),
+            icon: const Icon(Icons.zoom_in),
             onPressed: _aumentarFonte,
           ),
           IconButton(
-            icon: Icon(Icons.zoom_out),
+            icon: const Icon(Icons.zoom_out),
             onPressed: _diminuirFonte,
           ),
           IconButton(
-            icon: Icon(Icons.arrow_forward),
+            icon: const Icon(Icons.arrow_forward),
             onPressed: _proxProverbio,
           ),
         ],
       ),
       body: Center(
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -95,18 +95,18 @@ class _ProverbiosPageState extends State<ProverbiosPage> {
                 builder:
                     (BuildContext context, AsyncSnapshot<String> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   } else {
                     if (snapshot.hasError) {
-                      return Center(
+                      return const Center(
                         child: Text('Erro ao carregar o provérbio.'),
                       );
                     } else {
                       return Container(
-                        padding: EdgeInsets.all(16.0),
-                        margin: EdgeInsets.symmetric(vertical: 16.0),
+                        padding: const EdgeInsets.all(16.0),
+                        margin: const EdgeInsets.symmetric(vertical: 16.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(16.0),
@@ -138,7 +138,7 @@ class _ProverbiosPageState extends State<ProverbiosPage> {
                   },
                   icon: Text(
                     i.toString(),
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   ),
                 ),
             ],

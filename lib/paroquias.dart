@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
 class ParoquiasPage extends StatelessWidget {
+  const ParoquiasPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Paróquias'),
+        title: const Text('Paróquias'),
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -1365,10 +1367,10 @@ class ParoquiaSetorTile extends StatefulWidget {
   final String setor;
   final Map<String, String> paroquias;
 
-  ParoquiaSetorTile({
+  const ParoquiaSetorTile({Key? key, 
     required this.setor,
     required this.paroquias,
-  });
+  }) : super(key: key);
 
   @override
   _ParoquiaSetorTileState createState() => _ParoquiaSetorTileState();
@@ -1389,14 +1391,14 @@ class _ParoquiaSetorTileState extends State<ParoquiaSetorTile> {
             });
           },
           child: Container(
-            padding: EdgeInsets.all(12),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Text(
               widget.setor,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
@@ -1407,8 +1409,8 @@ class _ParoquiaSetorTileState extends State<ParoquiaSetorTile> {
           Column(
             children: widget.paroquias.entries.map((entry) {
               return Container(
-                margin: EdgeInsets.symmetric(vertical: 4),
-                padding: EdgeInsets.all(8),
+                margin: const EdgeInsets.symmetric(vertical: 4),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
@@ -1431,14 +1433,14 @@ class _ParoquiaSetorTileState extends State<ParoquiaSetorTile> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Informação da Paróquia'),
+          title: const Text('Informação da Paróquia'),
           content: Text(text),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Fechar'),
+              child: const Text('Fechar'),
             ),
           ],
         );

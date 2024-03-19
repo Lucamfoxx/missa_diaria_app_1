@@ -5,7 +5,7 @@ import 'package:flutter/services.dart' show rootBundle;
 class SalmoPage extends StatefulWidget {
   final int salmoNumber;
 
-  SalmoPage({required this.salmoNumber});
+  const SalmoPage({Key? key, required this.salmoNumber}) : super(key: key);
 
   @override
   _SalmoPageState createState() => _SalmoPageState();
@@ -60,26 +60,26 @@ class _SalmoPageState extends State<SalmoPage> {
         title: Text('Salmo $_currentSalmoNumber'),
         actions: [
           IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: _salmoAnterior,
           ),
           IconButton(
-            icon: Icon(Icons.zoom_in),
+            icon: const Icon(Icons.zoom_in),
             onPressed: _aumentarFonte,
           ),
           IconButton(
-            icon: Icon(Icons.zoom_out),
+            icon: const Icon(Icons.zoom_out),
             onPressed: _diminuirFonte,
           ),
           IconButton(
-            icon: Icon(Icons.arrow_forward),
+            icon: const Icon(Icons.arrow_forward),
             onPressed: _proxSalmo,
           ),
         ],
       ),
       body: Center(
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -88,18 +88,18 @@ class _SalmoPageState extends State<SalmoPage> {
                 builder:
                     (BuildContext context, AsyncSnapshot<String> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   } else {
                     if (snapshot.hasError) {
-                      return Center(
+                      return const Center(
                         child: Text('Erro ao carregar o salmo.'),
                       );
                     } else {
                       return Container(
-                        padding: EdgeInsets.all(16.0),
-                        margin: EdgeInsets.symmetric(vertical: 16.0),
+                        padding: const EdgeInsets.all(16.0),
+                        margin: const EdgeInsets.symmetric(vertical: 16.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(16.0),
