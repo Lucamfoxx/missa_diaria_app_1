@@ -25,20 +25,16 @@ class _SantoDoDiaPageState extends State<SantoDoDiaPage> {
           "${selectedDate.day.toString().padLeft(2, '0')}_${selectedDate.month.toString().padLeft(2, '0')}";
 
       String santoDoDiaText =
-          await rootBundle.loadString('assets/$formattedDate.txt');
+          await rootBundle.loadString('assets/santo_dia/txt/$formattedDate.txt');
 
       bool imageExists = await rootBundle
-          .load('assets/$formattedDate.jpg')
+          .load('assets/santo_dia/jpg/$formattedDate.jpg')
           .then((value) => true)
           .catchError((error) => false);
 
       setState(() {
         _santoDoDiaText = santoDoDiaText;
-        if (imageExists) {
-          _santoDoDiaImage = Image.asset('assets/$formattedDate.jpg');
-        } else {
-          _santoDoDiaImage = null;
-        }
+        _santoDoDiaImage = imageExists ? Image.asset('assets/santo_dia/jpg/$formattedDate.jpg') : null;
       });
     } catch (e) {
       setState(() {
@@ -107,18 +103,15 @@ class _SantoDoDiaPageState extends State<SantoDoDiaPage> {
                     width: 180,
                     height: 180,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                          color: const Color.fromARGB(0, 0, 0, 0), width: 2),
+                      border: Border.all(color: Theme.of(context).primaryColor, width: 2),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: _santoDoDiaImage,
+                      child: _santoDoDiaImage!,
                     ),
                   ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
