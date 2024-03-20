@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Santuario São Francisco de Assis',
       theme: ThemeData(
-        scaffoldBackgroundColor: Color.fromARGB(255, 0, 58, 140),
-        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Color.fromARGB(255, 217, 213, 197),
+        primarySwatch: Colors.yellow,
       ),
       initialRoute: '/',
       routes: {
@@ -104,7 +104,7 @@ class MenuButton extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.blue,
+        color: Color.fromARGB(255, 207, 180, 101),
         borderRadius: BorderRadius.circular(10),
       ),
       margin: EdgeInsets.symmetric(vertical: 4),
@@ -115,7 +115,7 @@ class MenuButton extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
             textAlign: TextAlign.center,
           ),
         ),

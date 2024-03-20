@@ -24,7 +24,7 @@ class _SalmoPageState extends State<SalmoPage> {
   }
 
   Future<String> _carregarSalmo(int salmoNumber) async {
-    return await rootBundle.loadString('assets/salmo_$salmoNumber.txt');
+    return await rootBundle.loadString('assets/biblia/Testamentos/Salmos_$salmoNumber.txt');
   }
 
   void _aumentarFonte() {

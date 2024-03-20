@@ -28,7 +28,7 @@ class SalmosPage extends StatelessWidget {
             },
             child: Container(
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 201, 234, 255),
+                color: Color.fromARGB(255, 241, 222, 101),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Center(

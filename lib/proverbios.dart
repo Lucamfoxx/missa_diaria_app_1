@@ -24,7 +24,7 @@ class _ProverbiosPageState extends State<ProverbiosPage> {
   }
 
   Future<String> _carregarProverbio(int proverbioNumber) async {
-    return await rootBundle.loadString('assets/proverbio_$proverbioNumber.txt');
+    return await rootBundle.loadString('assets/biblia/Testamentos/proverbio_$proverbioNumber.txt');
   }
 
   void _aumentarFonte() {
