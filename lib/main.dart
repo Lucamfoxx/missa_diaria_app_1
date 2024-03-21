@@ -6,17 +6,21 @@ import 'biblia.dart';
 import 'santo_do_dia.dart';
 import 'oracoes.dart';
 import 'paroquias.dart';
-import 'proverbios.dart'; // Importação de proverbios.dart
-import 'noticias.dart'; // Importação da página de notícias
+import 'proverbios.dart';
+import 'noticias.dart';
 import 'salmo_layout.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'horarios.dart'; // Importação da página horarios.dart
+import 'historiaparoquia.dart';
+import 'package:url_launcher/url_launcher.dart'; // Importação do url_launcher para abrir links
+ // Importação da página historiaparoquia.dart
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -36,7 +40,7 @@ class MyApp extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.done) {
               return MissaDiariaApp();
             } else {
-              return Container(); // You can return a loading indicator here if needed
+              return Container();
             }
           },
         ),
@@ -50,7 +54,9 @@ class MyApp extends StatelessWidget {
         '/salmo_layout': (context) => SalmoPage(salmoNumber: 1),
         for (int i = 1; i <= 150; i++)
           '/salmo_$i': (context) => SalmoPage(salmoNumber: i),
-        '/noticias': (context) => NoticiasPage(), // Rota para a página de notícias
+        '/noticias': (context) => NoticiasPage(),
+        '/horarios': (context) => HorariosPage(), // Rota para a página horarios.dart
+        '/historiaparoquia': (context) => HistoriaParoquiaPage(), // Rota para a página historiaparoquia.dart
       },
     );
   }
@@ -71,18 +77,20 @@ class MissaDiariaApp extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset(
-                    'assets/logo.png'), // Adicionando a imagem no corpo do aplicativo
-                SizedBox(height: 20), // Espaçamento entre a imagem e os botões
+                Image.asset('assets/logo.png'),
+                SizedBox(height: 20),
                 MenuButton('Liturgia Diária', '/missa_diaria'),
                 MenuButton('Salmos', '/salmos'),
                 MenuButton('Bíblia', '/biblia'),
                 MenuButton('Santo do Dia', '/santo_do_dia'),
                 MenuButton('Orações', '/oracoes'),
                 MenuButton('Dioceses', '/paroquias'),
-                MenuButton(
-                    'Provérbios', '/proverbios'), // Botão para Provérbios
-                MenuButton('Notícias', '/noticias'), // Botão para Notícias
+                MenuButton('Provérbios', '/proverbios'),
+                MenuButton('Notícias', '/noticias'),
+                MenuButton('Horários', '/horarios'), // Botão para Horários
+                MenuButton('História da Paróquia', '/historiaparoquia'), // Botão para História da Paróquia
+                SizedBox(height: 20), // Adiciona um espaço entre o menu e o texto com o endereço e telefone
+                ContactInfo(), // Adiciona o widget com as informações de contato
               ],
             ),
           ),
@@ -120,6 +128,42 @@ class MenuButton extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class ContactInfo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: () {
+            launch("tel://1132912400"); // Abre o aplicativo de telefone com o número específico
+          },
+          child: Text(
+            "Telefone: (11) 3291-2400",
+            style: TextStyle(
+              color: Colors.blue,
+              decoration: TextDecoration.underline,
+            ),
+          ),
+        ),
+        SizedBox(height: 10),
+        InkWell(
+          onTap: () {
+            launch("https://maps.app.goo.gl/uwWWSxfLaszAWTW39"); // Abre o endereço no Google Maps
+          },
+          child: Text(
+            "Endereço: Largo São Francisco, 133 - Sé, São Paulo - SP, 01005-010",
+            style: TextStyle(
+              color: Colors.blue,
+              decoration: TextDecoration.underline,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
     );
   }
 }

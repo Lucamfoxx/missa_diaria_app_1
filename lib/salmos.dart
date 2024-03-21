@@ -11,7 +11,7 @@ class SalmosPage extends StatelessWidget {
       ),
       body: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 6,
+          crossAxisCount: 5,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
           childAspectRatio: 1,
@@ -35,7 +35,7 @@ class SalmosPage extends StatelessWidget {
                 child: Text(
                   '$salmoNumber',
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color.fromARGB(255, 0, 0, 0),
                   ),
