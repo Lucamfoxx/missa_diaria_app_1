@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:intl/intl.dart'; // Importe o pacote intl para usar a classe DateFormat
+import 'package:intl/intl.dart'; 
 
 class Evento {
   final String titulo;
-  final String descricao;
+  final List<String> descricao;
   final DateTime dataInicio;
   final DateTime dataFim;
 
@@ -13,7 +13,7 @@ class Evento {
   factory Evento.fromSnapshot(DataSnapshot snapshot) {
     return Evento(
       titulo: snapshot.child('titulo').value as String,
-      descricao: snapshot.child('descricao').value as String,
+      descricao: (snapshot.child('descricao').value as String).split('\n'),
       dataInicio: DateTime.parse(snapshot.child('data_inicio').value as String),
       dataFim: DateTime.parse(snapshot.child('data_fim').value as String),
     );
@@ -24,6 +24,7 @@ class Evento {
     return agora.isAfter(dataInicio) && agora.isBefore(dataFim);
   }
 }
+
 class NoticiasPage extends StatefulWidget {
   @override
   _NoticiasPageState createState() => _NoticiasPageState();
@@ -31,16 +32,53 @@ class NoticiasPage extends StatefulWidget {
 
 class _NoticiasPageState extends State<NoticiasPage> {
   final DatabaseReference _eventosRef = FirebaseDatabase.instance.ref();
+  double _fontSize = 18.0;
+
+  void _aumentarFonte() {
+    setState(() {
+      _fontSize += 2.0;
+    });
+  }
+
+  void _diminuirFonte() {
+    setState(() {
+      if (_fontSize > 2.0) {
+        _fontSize -= 2.0;
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _eventosRef.keepSynced(true); // Manter os dados sincronizados mesmo quando a página não estiver ativa
+  }
+
+  @override
+  void dispose() {
+    _eventosRef.keepSynced(false); // Desativar a sincronização dos dados ao sair da página
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Eventos'),
+        actions: [
+          IconButton(
+            onPressed: _aumentarFonte,
+            icon: Icon(Icons.zoom_in),
+          ),
+          IconButton(
+            onPressed: _diminuirFonte,
+            icon: Icon(Icons.zoom_out),
+          ),
+        ],
       ),
       body: StreamBuilder(
         stream: _eventosRef.onValue,
-        builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
+        builder: (context, AsyncSnapshot<DatabaseEvent> snapshot){
           if (snapshot.hasData && !snapshot.hasError) {
             DataSnapshot dataSnapshot = snapshot.data!.snapshot;
             if (dataSnapshot.value != null) {
@@ -51,11 +89,14 @@ class _NoticiasPageState extends State<NoticiasPage> {
                 Evento evento = Evento.fromSnapshot(eventSnapshot);
                 eventos.add(evento);
               });
+              
+              eventos.sort((a, b) => a.dataInicio.compareTo(b.dataInicio));
+              
               return ListView.builder(
                 itemCount: eventos.length,
                 itemBuilder: (context, index) {
                   Evento evento = eventos[index];
-                  return NoticiaTile(evento: evento);
+                  return NoticiaTile(evento: evento, fontSize: _fontSize);
                 },
               );
             } else {
@@ -72,13 +113,13 @@ class _NoticiasPageState extends State<NoticiasPage> {
 
 class NoticiaTile extends StatefulWidget {
   final Evento evento;
+  final double fontSize;
 
-  const NoticiaTile({Key? key, required this.evento}) : super(key: key);
+  const NoticiaTile({Key? key, required this.evento, required this.fontSize}) : super(key: key);
 
   @override
   _NoticiaTileState createState() => _NoticiaTileState();
 }
-
 class _NoticiaTileState extends State<NoticiaTile> {
   bool _expanded = false;
 
@@ -111,7 +152,7 @@ class _NoticiaTileState extends State<NoticiaTile> {
             child: Text(
               widget.evento.titulo,
               style: TextStyle(
-                fontSize: 18,
+                fontSize: widget.fontSize,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -149,8 +190,14 @@ class _NoticiaTileState extends State<NoticiaTile> {
                   ),
                 ),
                 SizedBox(height: 5),
-                Text(
-                  widget.evento.descricao,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: widget.evento.descricao.map((descricao) {
+                    return Text(
+                      descricao,
+                      style: TextStyle(fontSize: widget.fontSize),
+                    );
+                  }).toList(),
                 ),
               ],
             ),
