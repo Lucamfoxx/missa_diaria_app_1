@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1094833832367",
+    "project_id": "appmissadiaria",
+    "storage_bucket": "appmissadiaria.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1094833832367:android:ce272db80d14c827082f5a",
+        "android_client_info": {
+          "package_name": "paroquia.saojose"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEaiPieAjg2K4u0W93eWvmP6NLMzkAXhA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
