@@ -141,12 +141,19 @@ class ContactInfo extends StatelessWidget {
           onTap: () {
             launch("tel://1132912400"); // Abre o aplicativo de telefone com o número específico
           },
-          child: Text(
-            "Telefone: (11) 3291-2400",
-            style: TextStyle(
-              color: Colors.blue,
-              decoration: TextDecoration.underline,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.phone, color: Colors.blue),
+              SizedBox(width: 5),
+              Text(
+                "Telefone: (11) 3291-2400",
+                style: TextStyle(
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ],
           ),
         ),
         SizedBox(height: 10),
@@ -154,13 +161,22 @@ class ContactInfo extends StatelessWidget {
           onTap: () {
             launch("https://maps.app.goo.gl/uwWWSxfLaszAWTW39"); // Abre o endereço no Google Maps
           },
-          child: Text(
-            "Endereço: Largo São Francisco, 133 - Sé, São Paulo - SP, 01005-010",
-            style: TextStyle(
-              color: Colors.blue,
-              decoration: TextDecoration.underline,
-            ),
-            textAlign: TextAlign.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.location_on, color: Colors.blue),
+              SizedBox(width: 5),
+              Text(
+                '''
+Endereço: Largo São Francisco, 133 
+Sé, São Paulo SP, 01005-010''',
+                style: TextStyle(
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       ],
