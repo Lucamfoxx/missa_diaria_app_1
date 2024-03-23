@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+
 class BibliaPage extends StatefulWidget {
   const BibliaPage({Key? key}) : super(key: key);
 
@@ -83,14 +84,14 @@ class _BibliaPageState extends State<BibliaPage> {
             Container(
               margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 207, 180, 101),
+                color: Color.fromARGB(255, 220, 219, 214),
                 borderRadius: BorderRadius.circular(10.0),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 2,
                     blurRadius: 5,
-                    offset: Offset(0, 2), // changes position of shadow
+                    offset: Offset(0, 2), // Altera a posição da sombra
                   ),
                 ],
               ),
@@ -98,14 +99,14 @@ class _BibliaPageState extends State<BibliaPage> {
                 onTap: () {
                   setState(() {
                     _velhoTestamentoExpanded = !_velhoTestamentoExpanded;
-                    _novoTestamentoExpanded = false; // Fechar o Novo Testamento
+                    _novoTestamentoExpanded = false; // Fecha o Novo Testamento
                   });
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Text(
                     'Velho Testamento',
-                    style: TextStyle(fontSize: 16.0),
+                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -119,14 +120,14 @@ class _BibliaPageState extends State<BibliaPage> {
             Container(
               margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 207, 180, 101),
+                color: Color.fromARGB(255, 220, 219, 214),
                 borderRadius: BorderRadius.circular(10.0),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 2,
                     blurRadius: 5,
-                    offset: Offset(0, 2), // changes position of shadow
+                    offset: Offset(0, 2), // Altera a posição da sombra
                   ),
                 ],
               ),
@@ -134,14 +135,14 @@ class _BibliaPageState extends State<BibliaPage> {
                 onTap: () {
                   setState(() {
                     _novoTestamentoExpanded = !_novoTestamentoExpanded;
-                    _velhoTestamentoExpanded = false; // Fechar o Velho Testamento
+                    _velhoTestamentoExpanded = false; // Fecha o Velho Testamento
                   });
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Text(
                     'Novo Testamento',
-                    style: TextStyle(fontSize: 16.0),
+                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold,),
                   ),
                 ),
               ),
@@ -162,7 +163,7 @@ class _BibliaPageState extends State<BibliaPage> {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 255, 250, 234),
+        color: Color.fromARGB(255, 255, 254, 248),
         borderRadius: BorderRadius.circular(8.0),
         boxShadow: [
           BoxShadow(
@@ -206,7 +207,7 @@ class _BibliaPageState extends State<BibliaPage> {
                     _openChapter(livro, grade);
                   },
                   child: Container(
-                    color: Color.fromARGB(255, 207, 180, 101),
+                    color: Color.fromARGB(255, 205, 200, 172),
                     child: Center(
                       child: Text(
                         grade.toString(),
@@ -243,14 +244,20 @@ class _BibliaPageState extends State<BibliaPage> {
 }
 
 
+
 class ChapterPage extends StatefulWidget {
   final String fileName;
   final String content;
   final String livro;
   final int grade;
 
-  const ChapterPage({Key? key, required this.fileName, required this.content, required this.livro, required this.grade})
-      : super(key: key);
+  const ChapterPage({
+    Key? key,
+    required this.fileName,
+    required this.content,
+    required this.livro,
+    required this.grade,
+  }) : super(key: key);
 
   @override
   _ChapterPageState createState() => _ChapterPageState();
@@ -259,10 +266,19 @@ class ChapterPage extends StatefulWidget {
 class _ChapterPageState extends State<ChapterPage> {
   double _fontSize = 16.0;
   List<dynamic> comments = [];
+  late String _fileName;
+  late String _content;
+  late String _livro;
+  late int _grade;
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    _fileName = widget.fileName;
+    _content = widget.content;
+    _livro = widget.livro;
+    _grade = widget.grade;
     loadComments();
   }
 
@@ -273,7 +289,7 @@ class _ChapterPageState extends State<ChapterPage> {
     if (await file.exists()) {
       List<dynamic> allComments = json.decode(await file.readAsString());
       setState(() {
-        comments = allComments.where((comment) => comment['livro'] == widget.livro && comment['grade'] == widget.grade).toList();
+        comments = allComments.where((comment) => comment['livro'] == _livro && comment['grade'] == _grade).toList();
       });
     }
   }
@@ -295,10 +311,10 @@ class _ChapterPageState extends State<ChapterPage> {
   void _saveComment(String comentario) async {
     if (comentario.isNotEmpty) {
       final Map<String, dynamic> commentMap = {
-        "fileName": widget.fileName,
-        "content": widget.content,
-        "livro": widget.livro,
-        "grade": widget.grade,
+        "fileName": _fileName,
+        "content": _content,
+        "livro": _livro,
+        "grade": _grade,
         "comentario": comentario,
       };
 
@@ -338,11 +354,40 @@ class _ChapterPageState extends State<ChapterPage> {
     loadComments();
   }
 
+  void _loadChapterText(int chapter) async {
+    String nextFileName = 'assets/biblia/Testamentos/${_livro}_$chapter.txt';
+    String nextContent = await rootBundle.loadString(nextFileName);
+    String nextChapterName = "${_livro.capitalize()} $chapter";
+
+    setState(() {
+      _fileName = nextChapterName;
+      _content = nextContent;
+      _grade = chapter;
+    });
+
+    loadComments();
+
+    // Scroll to top
+    _scrollController.animateTo(
+      0.0,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0.0,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.fileName),
+        title: Text(_fileName),
         actions: [
           IconButton(
             icon: Icon(Icons.zoom_in),
@@ -351,6 +396,20 @@ class _ChapterPageState extends State<ChapterPage> {
           IconButton(
             icon: Icon(Icons.zoom_out),
             onPressed: _decreaseFontSize,
+          ),
+          IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: _grade > 1 ? () {
+              _loadChapterText(_grade - 1);
+              _scrollToTop();
+            } : null,
+          ),
+          IconButton(
+            icon: Icon(Icons.arrow_forward),
+            onPressed: () {
+              _loadChapterText(_grade + 1);
+              _scrollToTop();
+            },
           ),
           IconButton(
             icon: Icon(Icons.comment),
@@ -391,6 +450,7 @@ class _ChapterPageState extends State<ChapterPage> {
         ],
       ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -410,7 +470,7 @@ class _ChapterPageState extends State<ChapterPage> {
                 ],
               ),
               child: Text(
-                widget.content,
+                _content,
                 style: TextStyle(fontSize: _fontSize),
               ),
             ),
@@ -468,7 +528,6 @@ class _ChapterPageState extends State<ChapterPage> {
     );
   }
 }
-
 
 extension StringExtension on String {
   String capitalize() {
