@@ -39,6 +39,7 @@ Até meados do século XVII, o frontispício das igrejas da Província era const
 
 O incêndio de 1880 destruiu a antiga capela-mor. Foram salvas as paredes, a imagem de São Francisco, considerada a mais bela das que se encontram nos conventos antigos, e a imagem da Imaculada Conceição, além de mobiliários como as estalas do coro dos frades. O Santuário é tombado como Patrimônio Histórico''',
                     'assets/imagens/imageconv1.jpg', // Caminho da imagem 1
+                    context,
                   ),
                   SizedBox(height: 20),
                   _buildTitleWithImage(
@@ -50,6 +51,7 @@ Paulista, de Guaratinguetá, Frei Galvão ingressou na Ordem Franciscana no dia 
 
  ''',
                     'assets/imagens/imageconv2.jpg', // Caminho da imagem 2
+                    context,
                   ),
                   SizedBox(height: 20),
                   _buildTitleWithImage(
@@ -65,6 +67,7 @@ Nem só de disputas judiciais viveram o Convento e a Faculdade. Em 1860 foi fund
 
 O CONVENTO ATUAL''',
                     'assets/imagens/imageconv3.jpg', // Caminho da imagem 3
+                    context,
                   ),
                   SizedBox(height: 20),
                   _buildTitleWithImage(
@@ -78,21 +81,22 @@ Até 2004 foi a sede da Província Franciscana da Imaculada Conceição do Brasi
 
 No dia 6 de junho de 1997, o Cardeal Dom Paulo Evaristo Arns, ilustre frade franciscano que também morou no Convento São Francisco, declarou que o Convento passaria a ser também Santuário São Francisco, já que recebe fiéis de toda a Grande São Paulo que aqui chegam para fazer suas orações, pedidos e agradecimentos ao nosso Patrono. Por ser um Santuário, a Igreja fica aberta todos os dias.
 
-''',
+ ''',
                     'assets/imagens/imageconv4.jpg', // Caminho da imagem 4
+                    context,
                   ),
                 ],
               ),
             ),
             SizedBox(height: 20),
-            _buildImageSlider(), // Adiciona o slider de imagens abaixo das informações
+            _buildImageSlider(context), // Adiciona o slider de imagens abaixo das informações
           ],
         ),
       ),
     );
   }
 
-  Widget _buildTitleWithImage(String title, String text, String imagePath) {
+  Widget _buildTitleWithImage(String title, String text, String imagePath, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -101,10 +105,15 @@ No dia 6 de junho de 1997, o Cardeal Dom Paulo Evaristo Arns, ilustre frade fran
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), // Ajuste o tamanho e a negrito do título
         ),
         SizedBox(height: 10),
-        Image.asset(
-          imagePath,
-          width: double.infinity, // Expandir a imagem até as laterais da tela
-          fit: BoxFit.cover, // Ajustar a imagem para cobrir todo o espaço disponível
+        GestureDetector(
+          onTap: () {
+            _showImageDialog(imagePath, context);
+          },
+          child: Image.asset(
+            imagePath,
+            width: double.infinity, // Expandir a imagem até as laterais da tela
+            fit: BoxFit.cover, // Ajustar a imagem para cobrir todo o espaço disponível
+          ),
         ),
         SizedBox(height: 10),
         Text(
@@ -116,52 +125,76 @@ No dia 6 de junho de 1997, o Cardeal Dom Paulo Evaristo Arns, ilustre frade fran
     );
   }
 
-  Widget _buildImageSlider() {
+  void _showImageDialog(String imagePath, BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Image.asset(
+              imagePath,
+              fit: BoxFit.contain,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildImageSlider(BuildContext context) {
     return Container(
       height: 200,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: [
-          _buildImageItem('assets/imagens/image_1.jpg'),
-          _buildImageItem('assets/imagens/image_2.jpg'),
-          _buildImageItem('assets/imagens/image_3.jpg'),
-          _buildImageItem('assets/imagens/image_4.jpg'),
-          _buildImageItem('assets/imagens/image_5.jpg'),
-          _buildImageItem('assets/imagens/image_6.jpg'),
-          _buildImageItem('assets/imagens/image_7.jpg'),
-          _buildImageItem('assets/imagens/image_8.jpg'),
-          _buildImageItem('assets/imagens/image_9.jpg'),
-          _buildImageItem('assets/imagens/image_10.jpg'),
-          _buildImageItem('assets/imagens/image_11.jpg'),
-          _buildImageItem('assets/imagens/image_12.jpg'),
-          _buildImageItem('assets/imagens/image_13.jpg'),
-          _buildImageItem('assets/imagens/image_14.jpg'),
-          _buildImageItem('assets/imagens/image_15.jpg'),
-          _buildImageItem('assets/imagens/image_16.jpg'),
-          _buildImageItem('assets/imagens/image_17.jpg'),
-          _buildImageItem('assets/imagens/image_18.jpg'),
-          _buildImageItem('assets/imagens/image_19.jpg'),
-          _buildImageItem('assets/imagens/image_20.jpg'),
-          _buildImageItem('assets/imagens/image_21.jpg'),
-          _buildImageItem('assets/imagens/image_22.jpg'),
-          _buildImageItem('assets/imagens/image_23.jpg'),
-          _buildImageItem('assets/imagens/image_24.jpg'),
-          _buildImageItem('assets/imagens/image_25.jpg'),
+          _buildImageItem('assets/imagens/image_1.jpg', context),
+          _buildImageItem('assets/imagens/image_2.jpg', context),
+          _buildImageItem('assets/imagens/image_3.jpg', context),
+          _buildImageItem('assets/imagens/image_4.jpg', context),
+          _buildImageItem('assets/imagens/image_5.jpg', context),
+          _buildImageItem('assets/imagens/image_6.jpg', context),
+          _buildImageItem('assets/imagens/image_7.jpg', context),
+          _buildImageItem('assets/imagens/image_8.jpg', context),
+          _buildImageItem('assets/imagens/image_9.jpg', context),
+          _buildImageItem('assets/imagens/image_10.jpg', context),
+          _buildImageItem('assets/imagens/image_11.jpg', context),
+          _buildImageItem('assets/imagens/image_12.jpg', context),
+          _buildImageItem('assets/imagens/image_13.jpg', context),
+          _buildImageItem('assets/imagens/image_14.jpg', context),
+          _buildImageItem('assets/imagens/image_15.jpg', context),
+          _buildImageItem('assets/imagens/image_16.jpg', context),
+          _buildImageItem('assets/imagens/image_17.jpg', context),
+          _buildImageItem('assets/imagens/image_18.jpg', context),
+          _buildImageItem('assets/imagens/image_19.jpg', context),
+          _buildImageItem('assets/imagens/image_20.jpg', context),
+          _buildImageItem('assets/imagens/image_21.jpg', context),
+          _buildImageItem('assets/imagens/image_22.jpg', context),
+          _buildImageItem('assets/imagens/image_23.jpg', context),
+          _buildImageItem('assets/imagens/image_24.jpg', context),
+          _buildImageItem('assets/imagens/image_25.jpg', context),
         ],
       ),
     );
   }
 
-  Widget _buildImageItem(String imagePath) {
+  Widget _buildImageItem(String imagePath, BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(8.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20.0), // Cantos arredondados
-        child: Image.asset(
-          imagePath,
-          width: 300,
-          height: 200,
-          fit: BoxFit.cover, // Ajustar a imagem para cobrir todo o espaço disponível
+      child: GestureDetector(
+        onTap: () {
+          _showImageDialog(imagePath, context);
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20.0), // Cantos arredondados
+          child: Image.asset(
+            imagePath,
+            width: 300,
+            height: 200,
+            fit: BoxFit.cover, // Ajustar a imagem para cobrir todo o espaço disponível
+          ),
         ),
       ),
     );
